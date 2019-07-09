@@ -10,7 +10,18 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api/getSwiperList': {
+        target: 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/m/index.html'
+          req.headers.host = 'c.y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getSwiperList': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
