@@ -20,6 +20,16 @@ module.exports = {
         pathRewrite: {
           '^/api/getSwiperList': ''
         }
+      },
+      '/api/getDiscList': {
+        target: 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg',
+        bypass: function(req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/portal/playlist.html',
+          req.headers.host = 'c.y.qq.com'
+        },
+        pathRewrite: {
+          '^/api/getDiscList': ''
+        }
       }
     },
 
