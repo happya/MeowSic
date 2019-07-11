@@ -3,7 +3,7 @@
     <!--音乐app图标-->
     <div class="icon"></div>
     <!--音乐app标题-->
-    <h1 class="text">Chicken Music</h1>
+    <h1 class="text">MeowSic</h1>
   </div>
 </template>
 
