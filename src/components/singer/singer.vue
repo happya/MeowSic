@@ -1,14 +1,22 @@
 <template>
-  <div class="singer">
-    <list-view :singerList="singers"></list-view>
+  <div
+    class="singer"
+    ref="singer"
+  ><list-view
+      :singerList="singers"
+      @select="selectSinger"
+      ref="list"
+    ></list-view>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { getSingerList } from 'api/singer'
-import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer'
 import ListView from 'base/listview/listview'
+import { getSingerList } from 'api/singer'
+import { ERR_OK } from 'api/config'
+import { mapMutations } from 'vuex'
 
 const HOT_NAME = '热门'
 const HOT_SINGER_LENGTH = 10
@@ -22,11 +30,14 @@ export default {
   },
   created() {
     this._getSingerList()
-    // setTimeout(() => {
-    //   this._getSingerList()
-    // }, 2000)
   },
   methods: {
+    selectSinger(singer) {
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+      this.setSinger(singer)
+    },
     _getSingerList() {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
@@ -82,7 +93,10 @@ export default {
       })
       // 将hot 和 ret拼接后返回
       return hot.concat(ret)
-    }
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER'
+    })
   },
   components: {
     ListView

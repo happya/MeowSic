@@ -19,6 +19,7 @@
         <!-- 某一类下歌手的list -->
         <ul>
           <li
+            @click="selectItem(singer)"
             class="list-group-item"
             v-for="singer of group.items"
             :key="singer.id"
@@ -107,6 +108,9 @@ export default {
     }
   },
   methods: {
+    selectItem(item) {
+      this.$emit('select', item)
+    },
     onShortcutTouchStart(e) {
       // 获取data-index的值，也就是index
       let archorIndex = getData(e.target, 'index')
