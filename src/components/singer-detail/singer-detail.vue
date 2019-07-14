@@ -39,7 +39,7 @@ export default {
   methods: {
     _getDetail() {
       if (!this.singer.id) {
-        this.$route.push('/singer')
+        this.$router.push('/singer')
         return
       }
       // 通过歌手id，爬取到歌曲的信息 getSingerDetail
