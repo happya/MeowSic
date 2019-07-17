@@ -61,7 +61,12 @@ export default {
       this._triggerPercent()
     },
     progressClick(e) {
-      this._offset(e.offsetX)
+      // 获取e.offsetX，在原来位置点击两次，会出bug
+      // console.log(e.offsetX)
+      // this._offset(e.offsetX)
+      const rect = this.$refs.progressBar.getBoundingClientRect()
+      const offsetWidth = e.pageX - rect.left
+      this._offset(offsetWidth)
       this._triggerPercent()
     },
     _triggerPercent() {
