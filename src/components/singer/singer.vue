@@ -2,7 +2,8 @@
   <div
     class="singer"
     ref="singer"
-  ><list-view
+  >
+    <list-view
       :singerList="singers"
       @select="selectSinger"
       ref="list"
@@ -13,6 +14,7 @@
 
 <script>
 import Singer from 'common/js/singer'
+import { playlistMixin } from 'common/js/mixin'
 import ListView from 'base/listview/listview'
 import { getSingerList } from 'api/singer'
 import { ERR_OK } from 'api/config'
@@ -23,6 +25,7 @@ const HOT_SINGER_LENGTH = 10
 
 export default {
   name: 'Singer',
+  mixins: [playlistMixin],
   data() {
     return {
       singers: []
@@ -32,6 +35,11 @@ export default {
     this._getSingerList()
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.singer.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     selectSinger(singer) {
       this.$router.push({
         path: `/singer/${singer.id}`
@@ -110,5 +118,4 @@ export default {
     top: 88px
     bottom: 0
     width: 100%
-    background: $color-background
 </style>

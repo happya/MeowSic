@@ -131,6 +131,9 @@ export default {
     scroll(pos) {
       this.scrollY = pos.y
     },
+    refresh() {
+      this.$refs.listview.refresh()
+    },
     _scrollTo(index) {
       // 当点击到选择的外部边缘区域时，index为null
       // 满足!index==true，且排除了index===0的情形

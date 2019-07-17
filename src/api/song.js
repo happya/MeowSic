@@ -3,6 +3,24 @@ import axios from 'axios'
 import { getUid } from 'common/js/uid'
 
 const debug = process.env.NODE_ENV !== 'production'
+
+export function getLyric(mid) {
+  const url = '/api/lyric'
+  const data = Object.assign({}, commonParams, {
+    songmid: mid,
+    pcachetime: +new Date(),
+    platform: 'yqq',
+    hostUin: 0,
+    needNewCode: 0,
+    format: 'json'
+  })
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
 // 由爬取到的歌曲的mid值，和type值，生成可用的mid
 function genUrlMid(mids, types) {
   // 实时获取id值

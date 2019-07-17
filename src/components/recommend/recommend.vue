@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <base-scroll
       class="recommend-content"
       ref="scroll"
@@ -55,9 +55,12 @@ import BaseScroll from 'base/scroll/scroll'
 import BaseSlider from 'base/slider/slider'
 import BaseLoading from 'base/loading/loading'
 import { getRecommendAjax, getDiscList } from 'api/recommend'
+import { playlistMixin } from 'common/js/mixin'
 import { ERR_OK } from 'api/config'
 
 export default {
+  name: 'Recommend',
+  mixins: [playlistMixin],
   data() {
     return {
       swiperSliders: [],
@@ -74,6 +77,11 @@ export default {
     this._getDiscList()
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     _getRecommend() {
       getRecommendAjax().then((res) => {
         if (res.code === ERR_OK) {
