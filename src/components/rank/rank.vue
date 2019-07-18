@@ -1,13 +1,114 @@
 <template>
-  <div>rank</div>
+  <div class="rank" ref="rank">
+    <base-scroll
+      :data="topList"
+      class="toplist"
+      ref="toplist"
+    >
+    <ul>
+      <li
+        class="item"
+        v-for="(item, index) in topList"
+        :key="index"
+      >
+        <!--排行榜单图片-->
+        <div class="icon">
+          <img width="100" height="100" v-lazy='item.picUrl'>
+        </div>
+        <!--榜单上的前几首歌-->
+        <ul class="songlist">
+          <li
+            class="song"
+            v-for="(song, index) of item.songList"
+            :key="index"
+          >
+            <span>{{index + 1}}</span>
+            <span>{{song.songname}}-{{song.singername}}</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <!--懒加载-->
+    <div class="loading-container" v-show="!topList.length">
+      <base-loading></base-loading>
+    </div>
+    </base-scroll>
+  </div>
 </template>
 
 <script>
-export default {
+import { mapMutations } from 'vuex'
+import BaseScroll from 'base/scroll/scroll'
+import BaseLoading from 'base/loading/loading'
+import { getTopList } from 'api/rank'
+import { ERR_OK } from 'api/config'
 
+export default {
+  name: 'Rank',
+  data() {
+    return {
+      topList: []
+    }
+  },
+  created() {
+    this._getTopList()
+  },
+  methods: {
+    _getTopList() {
+      getTopList().then((res) => {
+        if (res.code === ERR_OK) {
+          this.topList = res.data.topList
+        }
+      })
+    },
+    _normalizeList() {},
+    ...mapMutations({
+      setTopList: 'SET_TOP_LIST'
+    })
+  },
+  components: {
+    BaseScroll,
+    BaseLoading
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-
+  @import '~common/stylus/variable'
+  @import '~common/stylus/mixin'
+  .rank
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
+    .toplist
+      height: 100%
+      overflow: hidden
+      .item
+        display: flex
+        margin: 0 20px
+        padding-top: 20px
+        height: 100px
+        .icon
+          flex: 0 0 100px
+        .songlist
+          overflow: hidden
+          display: flex
+          flex-direction: column
+          flex: 1
+          height: 100px
+          justify-content: center
+          padding: 0 20px
+          background: $color-highlight-background
+          color: $color-text-d
+          font-size: $font-size-small
+          .song
+            no-wrap()
+            line-height: 26px
+      .loading-container
+        position: absolute
+        width: 100%
+        top: 50%
+        transform: translateY(-50%)
 </style>
