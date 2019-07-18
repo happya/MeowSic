@@ -45,7 +45,7 @@ export function createSong(musicData) {
 }
 
 export function isValidMusic(musicData) {
-  return musicData.songid && musicData.albummid && (!musicData.pay || musicData.payalbumprice === 0)
+  return musicData.songid && musicData.albummid && (!musicData.pay || musicData.pay.payalbumprice === 0)
 }
 
 // 处理多个歌手的情形，获取每个歌手的名字，并用/连接这些歌手的名字

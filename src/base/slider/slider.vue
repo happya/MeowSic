@@ -120,7 +120,7 @@ export default {
       // pageIndex = (pageIndex + 1) % this.pageNumber
       this.timer = setTimeout(() => {
         // goToPage是bscroll提供的接口
-        this.slider.next(400)
+        this.slider.next(2000)
       }, this.interval)
     }
   },

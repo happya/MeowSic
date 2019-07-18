@@ -27,6 +27,7 @@
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
             <li
+              @click="selectItem(item)"
               class="item"
               v-for="(item,index) in discList"
               :key="index"
@@ -47,10 +48,12 @@
         <base-loading></base-loading>
       </div>
     </base-scroll>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import BaseScroll from 'base/scroll/scroll'
 import BaseSlider from 'base/slider/slider'
 import BaseLoading from 'base/loading/loading'
@@ -82,6 +85,21 @@ export default {
       this.$refs.recommend.style.bottom = bottom
       this.$refs.scroll.refresh()
     },
+    selectItem(item) {
+      // console.log(item)
+      this.$router.push({
+        path: `/recommend/${item.dissid}`
+      })
+      this.setDisc(item)
+    },
+    loadImg() {
+      if (!this.checkLoaded) {
+        this.checkLoaded = true
+        setTimeout(() => {
+          this.$refs.scroll.refresh()
+        }, 20)
+      }
+    },
     _getRecommend() {
       getRecommendAjax().then((res) => {
         if (res.code === ERR_OK) {
@@ -97,14 +115,9 @@ export default {
         }
       })
     },
-    loadImg() {
-      if (!this.checkLoaded) {
-        this.checkLoaded = true
-        setTimeout(() => {
-          this.$refs.scroll.refresh()
-        }, 20)
-      }
-    }
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
   },
   components: {
     BaseSlider,
