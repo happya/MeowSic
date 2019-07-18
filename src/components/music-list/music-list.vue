@@ -35,7 +35,10 @@
         <!-- 歌曲列表 -->
       <div class="song-list-wrapper">
 
-        <song-list :songs="songs" @select="selectItem">
+        <song-list
+          :rank="rank"
+          :songs="songs"
+          @select="selectItem">
         </song-list>
       </div>
 
@@ -76,6 +79,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
