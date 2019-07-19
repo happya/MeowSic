@@ -4,11 +4,8 @@
     <div class="search-box-wrapper">
       <search-box @query="onQueryChange" ref="searchBox"></search-box>
     </div>
-    <div class="shortcut-wrapper"
-         ref="shortcutWrapper"
-         v-show="!query"
-    >
-      <base-scroll class="shortcut" ref="shortcut">
+    <div class="shortcut-wrapper" ref="shortcutWrapper" v-show="!query">
+      <base-scroll class="shortcut" ref="shortcut" :data="shortcut">
         <div>
           <!--热门搜索-->
           <div class="hot-key">
@@ -24,41 +21,88 @@
             </ul>
           </div>
           <!--搜索历史-->
-          <div class="search-history"></div>
+          <div class="search-history" v-show="searchHistory.length">
+            <h1 class="title">
+              <span class="text">搜索历史</span>
+              <span class="clear" @click="showConfirm">
+                <i class="icon-clear"></i>
+              </span>
+            </h1>
+            <search-list :searches="searchHistory"
+                         @delete="deleteSearchHistory"
+                         @select="addQuery"
+            ></search-list>
+          </div>
         </div>
       </base-scroll>
     </div>
     <!--搜索结果-->
-    <div class="search-result" v-show="query">
-      <suggest @listScroll="blurInput" :query="query"></suggest>
+    <div class="search-result" ref="searchResult" v-show="query">
+      <suggest ref="suggest"
+               :query="query"
+               @select="saveSearch"
+               @listScroll="blurInput"
+      ></suggest>
     </div>
+    <confirm ref="confirm"
+             text="是否清空搜索历史"
+             confirmBtnText="清空"
+             @confirm="clearSearchHistory"
+    ></confirm>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import SearchBox from 'base/search-box/search-box'
+import SearchList from 'base/search-list/search-list'
+import BaseScroll from 'base/scroll/scroll'
+import Confirm from 'base/confirm/confirm'
+import Suggest from 'components/suggest/suggest'
 import { getHotkey } from 'api/search'
 import { ERR_OK } from 'api/config'
-import SearchBox from 'base/search-box/search-box'
-import BaseScroll from 'base/scroll/scroll'
-import Suggest from 'components/suggest/suggest'
+import { playlistMixin } from 'common/js/mixin'
+
 export default {
   name: 'Search',
+  mixins: [playlistMixin],
   data() {
     return {
       hotKey: [],
       query: ''
     }
   },
+  computed: {
+    shortcut() {
+      return this.hotKey.concat(this.searchHistory)
+    },
+    ...mapGetters([
+      'searchHistory'
+    ])
+  },
   created() {
     this._getHotkey()
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.shortcutWrapper.style.bottom = bottom
+      this.$refs.shortcut.refresh()
+      this.$refs.searchResult.style.bottom = bottom
+      this.$refs.suggest.refresh()
+    },
     onQueryChange(query) {
       this.query = query
     },
     addQuery(query) {
       this.$refs.searchBox.setQuery(query)
+    },
+    saveSearch() {
+      this.saveSearchHistory(this.query)
+    },
+    showConfirm() {
+      this.$refs.confirm.show()
     },
     blurInput() {
       this.$refs.searchBox.blur()
@@ -69,12 +113,28 @@ export default {
           this.hotKey = res.data.hotkey.slice(0, 10)
         }
       })
+    },
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory',
+      'clearSearchHistory'
+    ])
+  },
+  watch: {
+    query(newQuery) {
+      if (!newQuery) {
+        setTimeout(() => {
+          this.$refs.shortcut.refresh()
+        }, 20)
+      }
     }
   },
   components: {
     SearchBox,
+    SearchList,
     BaseScroll,
-    Suggest
+    Suggest,
+    Confirm
   }
 }
 </script>
@@ -107,6 +167,21 @@ export default {
             background: $color-highlight-background
             font-size: $font-size-medium
             color: $color-text-d
+        .search-history
+          position: relative
+          margin: 0 20px
+          .title
+            display: flex
+            align-items: center
+            height: 40px
+            font-size: $font-size-medium
+            color: $color-text-l
+            .text
+              flex: 1
+            .clear
+              extend-click()
+              .icon-clear
+                color: $color-text-d
     .search-result
       position: fixed
       width: 100%

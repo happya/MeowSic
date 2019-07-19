@@ -63,6 +63,9 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.$refs.suggest.refresh()
+    },
     search() {
       this.page = 1
       this.hasMore = true
@@ -103,6 +106,7 @@ export default {
       } else {
         this.insertSong(item)
       }
+      this.$emit('select')
     },
     listScroll() {
       this.$emit('listScroll')
