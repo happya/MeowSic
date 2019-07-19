@@ -24,6 +24,14 @@ export default {
     listenScroll: { // 是否监听滚动事件
       type: Boolean,
       default: false
+    },
+    pullup: { // 是否下拉刷新
+      type: Boolean,
+      default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -40,6 +48,7 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
+      // 是否监听scroll事件
       if (this.listenScroll) {
         // this 默认指向scroll
         let me = this
@@ -47,6 +56,19 @@ export default {
         // 回调函数会向父组件派发一个scroll事件
         this.scroll.on('scroll', (pos) => {
           me.$emit('scroll', pos)
+        })
+      }
+      // 是否下拉加载
+      if (this.pullup) {
+        this.scroll.on('scrollEnd', () => {
+          if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+            this.$emit('scrollToEnd')
+          }
+        })
+      }
+      if (this.beforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('beforeScroll')
         })
       }
     },

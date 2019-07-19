@@ -2,35 +2,114 @@
   <div class="search">
     <!--搜索框-->
     <div class="search-box-wrapper">
-      <search-box></search-box>
+      <search-box @query="onQueryChange" ref="searchBox"></search-box>
     </div>
-    <div>
-      <base-scroll>
+    <div class="shortcut-wrapper"
+         ref="shortcutWrapper"
+         v-show="!query"
+    >
+      <base-scroll class="shortcut" ref="shortcut">
         <div>
           <!--热门搜索-->
-          <div class="hot-key"></div>
+          <div class="hot-key">
+            <h1 class="title">热门搜索</h1>
+            <ul>
+              <li v-for="(item, index) in hotKey"
+                  :key="index"
+                  class="item"
+                  @click="addQuery(item.k)"
+              >
+                <span>{{item.k}}</span>
+              </li>
+            </ul>
+          </div>
           <!--搜索历史-->
           <div class="search-history"></div>
         </div>
       </base-scroll>
     </div>
     <!--搜索结果-->
-    <div class="search-result"></div>
+    <div class="search-result" v-show="query">
+      <suggest @listScroll="blurInput" :query="query"></suggest>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { getHotkey } from 'api/search'
+import { ERR_OK } from 'api/config'
 import SearchBox from 'base/search-box/search-box'
 import BaseScroll from 'base/scroll/scroll'
+import Suggest from 'components/suggest/suggest'
 export default {
   name: 'Search',
+  data() {
+    return {
+      hotKey: [],
+      query: ''
+    }
+  },
+  created() {
+    this._getHotkey()
+  },
+  methods: {
+    onQueryChange(query) {
+      this.query = query
+    },
+    addQuery(query) {
+      this.$refs.searchBox.setQuery(query)
+    },
+    blurInput() {
+      this.$refs.searchBox.blur()
+    },
+    _getHotkey() {
+      getHotkey().then((res) => {
+        if (res.code === ERR_OK) {
+          this.hotKey = res.data.hotkey.slice(0, 10)
+        }
+      })
+    }
+  },
   components: {
     SearchBox,
-    BaseScroll
+    BaseScroll,
+    Suggest
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-
+  @import '~common/stylus/variable'
+  @import '~common/stylus/mixin'
+  .search
+    .search-box-wrapper
+      margin: 20px
+    .shortcut-wrapper
+      position: fixed
+      top: 178px
+      bottom: 0
+      width: 100%
+      .shortcut
+        height: 100%
+        overflow: hidden
+        .hot-key
+          margin: 0 20px 20px 20px
+          .title
+            margin-bottom: 20px
+            font-size: $font-size-medium
+            color: $color-text-l
+          .item
+            display: inline-block
+            padding: 5px 10px
+            margin: 0 20px 10px 0
+            border-radius: 6px
+            background: $color-highlight-background
+            font-size: $font-size-medium
+            color: $color-text-d
+    .search-result
+      position: fixed
+      width: 100%
+      top: 178px
+      bottom: 0
 </style>

@@ -30,7 +30,8 @@ export default {
       margin-right: 9px
       width: 30px
       height: 32px
-      bg-image('logo')
+      border-radius: 10px
+      bg-image('lioncat')
       background-size: 30px 32px
     .text
       display: inline-block
