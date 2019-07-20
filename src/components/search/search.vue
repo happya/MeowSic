@@ -5,7 +5,11 @@
       <search-box @query="onQueryChange" ref="searchBox"></search-box>
     </div>
     <div class="shortcut-wrapper" ref="shortcutWrapper" v-show="!query">
-      <base-scroll class="shortcut" ref="shortcut" :data="shortcut">
+      <base-scroll class="shortcut"
+                   ref="shortcut"
+                   :refreshDelay="refreshDelay"
+                   :data="shortcut"
+      >
         <div>
           <!--热门搜索-->
           <div class="hot-key">
@@ -54,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import SearchBox from 'base/search-box/search-box'
 import SearchList from 'base/search-list/search-list'
 import BaseScroll from 'base/scroll/scroll'
@@ -62,24 +66,21 @@ import Confirm from 'base/confirm/confirm'
 import Suggest from 'components/suggest/suggest'
 import { getHotkey } from 'api/search'
 import { ERR_OK } from 'api/config'
-import { playlistMixin } from 'common/js/mixin'
+import { playlistMixin, searchMixin } from 'common/js/mixin'
 
 export default {
   name: 'Search',
-  mixins: [playlistMixin],
+  mixins: [playlistMixin, searchMixin],
   data() {
     return {
-      hotKey: [],
-      query: ''
+      hotKey: []
+      // query: '' 在mixin中获取
     }
   },
   computed: {
     shortcut() {
       return this.hotKey.concat(this.searchHistory)
-    },
-    ...mapGetters([
-      'searchHistory'
-    ])
+    }
   },
   created() {
     this._getHotkey()
@@ -92,20 +93,8 @@ export default {
       this.$refs.searchResult.style.bottom = bottom
       this.$refs.suggest.refresh()
     },
-    onQueryChange(query) {
-      this.query = query
-    },
-    addQuery(query) {
-      this.$refs.searchBox.setQuery(query)
-    },
-    saveSearch() {
-      this.saveSearchHistory(this.query)
-    },
     showConfirm() {
       this.$refs.confirm.show()
-    },
-    blurInput() {
-      this.$refs.searchBox.blur()
     },
     _getHotkey() {
       getHotkey().then((res) => {
@@ -115,8 +104,6 @@ export default {
       })
     },
     ...mapActions([
-      'saveSearchHistory',
-      'deleteSearchHistory',
       'clearSearchHistory'
     ])
   },

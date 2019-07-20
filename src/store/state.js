@@ -1,5 +1,5 @@
 import { playMode } from 'common/js/config'
-import { localSearch } from 'common/js/cache'
+import { localSearch, loadPlay } from 'common/js/cache'
 const state = {
   singer: {},
   disc: {},
@@ -9,6 +9,7 @@ const state = {
   playlist: [],
   sequenceList: [],
   searchHistory: localSearch(),
+  playHistory: loadPlay(),
   mode: playMode.sequence,
   currentIndex: -1
 }
