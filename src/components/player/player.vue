@@ -150,7 +150,7 @@
     <audio
       :src="currentSong.url"
       ref="audio"
-      @canplay="ready"
+      @play="ready"
       @error="error"
       @timeupdate="updateTime"
       @ended="end"
@@ -175,6 +175,7 @@ import ProgressCircle from 'base/progress-circle/progress-circle'
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
 const windowWidth = window.innerWidth
+const timeExp = /\[(\d{2}):(\d{2}):(\d{2})]/g
 
 export default {
   name: 'Player',
@@ -237,6 +238,7 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop()
+        return
       } else {
         let index = this.currentIndex - 1
         if (index === -1) {
@@ -246,8 +248,8 @@ export default {
         if (!this.playing) {
           this.togglePlaying()
         }
-        this.songReady = false
       }
+      this.songReady = false
     },
     next() {
       if (!this.songReady) {
@@ -255,14 +257,15 @@ export default {
       }
       if (this.playlist.length === 1) {
         this.loop()
+        return
       } else {
         let index = (this.currentIndex + 1) % this.playlist.length
         this.setCurrentIndex(index)
         if (!this.playing) {
           this.togglePlaying()
         }
-        this.songReady = false
       }
+      this.songReady = false
     },
     loop() {
       let refAudio = this.$refs.audio
@@ -307,9 +310,23 @@ export default {
     },
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
+        if (this.currentSong.lyric !== lyric) {
+          return
+        }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
-        if (this.playing) {
-          this.currentLyric.play()
+        // 判断是否没有歌词的纯音乐，并将判断结果存为标志位
+        this.isPureMusic = !this.currentLyric.lines.length
+        if (this.isPureMusic) {
+          // 将歌曲lrc前面的时间戳删去
+          // 时间戳格式为[00:00:00]，正则表达式为/\[(%d{2}):(%d{2}):(%d{2})\]/
+          // trim()为es6语法，用于去除字符串两端空白
+          this.pureMusicLyric = this.currentLyric.lrc.replace(timeExp, '').trim()
+          console.log(this.pureMusicLyric)
+          this.playingLyric = this.pureMusicLyric
+        } else {
+          if (this.playing && this.canLyricPlay) {
+            this.currentLyric.seek(this.currentTime * 1000)
+          }
         }
       }).catch(() => {
         this.currentLyric = null
@@ -478,16 +495,25 @@ export default {
       // this.canLyricPlay = false
       if (this.currentLyric) {
         this.currentLyric.stop()
-        // this.currentLyric = null
-        // this.currentTime = 0
-        // this.playingLyric = ''
-        // this.currentLineNum = 0
+        this.currentLyric = null
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
       }
-      // 为了不在请求播放的Url的同时调用play,这里加个延时
-      this.$nextTick(() => {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      // 为了在手机上播放时，从后台切到前台能正常播放
+      // 所以有1s延时
+      this.timer = setTimeout(() => {
         this.$refs.audio.play()
-      })
-      this.getLyric()
+        this.getLyric()
+      }, 1000)
+      // 为了不在请求播放的Url的同时调用play,这里加个延时
+    //   this.$nextTick(() => {
+    //     this.$refs.audio.play()
+    //   })
+    //   this.getLyric()
     },
     playing(newPlaying) {
       const audio = this.$refs.audio
