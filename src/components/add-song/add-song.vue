@@ -25,6 +25,7 @@
                        :data="playHistory"
                        ref="songList"
                        class="list-scroll"
+                       :refreshDelay="refreshDelay"
           >
             <div class="list-inner">
               <song-list :songs="playHistory" @select="selectSong"></song-list>
@@ -200,20 +201,16 @@ export default {
       bottom: 0
       width: 100%
     .tip-title
-      display: flex
-      align-items: center
-      padding: 15px 0
+      padding: 18px 0
+      text-align: center
       font-size: 0
-      line-height: 20px
       .icon-ok
-        flex: 0 0 116px
-        text-align: right
         margin-right: 4px
+        vertical-align: middle
         font-size: $font-size-medium
         color: $color-theme
       .text
-        flex: 1
-        text-align: left
+        vertical-align: middle
         color: $color-text
         font-size: $font-size-medium
 </style>

@@ -4,6 +4,10 @@
     <div class="icon"></div>
     <!--音乐app标题-->
     <h1 class="text">MeowSic</h1>
+    <!--用户中心路由入口-->
+    <router-link to="/user" class="mine" tag="div">
+      <i class="icon-mine"></i>
+    </router-link>
   </div>
 </template>
 
@@ -38,5 +42,13 @@ export default {
       line-height: 44px
       vertical-align: top
       font-size: $font-size-large
-
+    .mine
+      position: absolute
+      top: 0
+      right: 0
+      .icon-mine
+        display: inline-block
+        padding: 12px
+        color: $color-theme
+        font-size: 20px
 </style>

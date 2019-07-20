@@ -104,7 +104,10 @@
             </div>
             <!--右一： 收藏按钮-->
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon"
+                 @click="toggleFavorite(currentSong)"
+                 :class="favoriteIcon"
+              ></i>
             </div>
           </div>
         </div>
@@ -668,6 +671,8 @@ export default {
               font-size: 40px
           .i-right
             text-align: left
+          .icon-favorite
+            color: $color-sub-theme
       &.normal-enter-active, &.normal-leave-active
         transition: all 0.4s
         .top, .bottom
