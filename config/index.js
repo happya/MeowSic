@@ -20,27 +20,27 @@ module.exports = {
         pathRewrite: {
           '^/api/getSwiperList': ''
         }
-      },
-      '/api/getDiscList': {
-        target: 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg',
-        bypass: function(req, res, proxyOptions) {
-          req.headers.referer = 'https://y.qq.com/portal/playlist.html',
-          req.headers.host = 'c.y.qq.com'
-        },
-        pathRewrite: {
-          '^/api/getDiscList': ''
-        }
-      },
-      '/api/getSingerList': {
-        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
-        bypass: function(req, res, proxyOptions) {
-          req.headers.referer = 'https://y.qq.com/portal/singer_list.html',
-          req.headers.host = 'c.y.qq.com'
-        },
-        pathRewrite: {
-          '^/api/getSingerList': ''
-        }
       }
+      // '/api/getDiscList': {
+      //   target: 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg',
+      //   bypass: function(req, res, proxyOptions) {
+      //     req.headers.referer = 'https://y.qq.com/portal/playlist.html',
+      //     req.headers.host = 'c.y.qq.com'
+      //   },
+      //   pathRewrite: {
+      //     '^/api/getDiscList': ''
+      //   }
+      // },
+      // '/api/getSingerList': {
+      //   target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
+      //   bypass: function(req, res, proxyOptions) {
+      //     req.headers.referer = 'https://y.qq.com/portal/singer_list.html',
+      //     req.headers.host = 'c.y.qq.com'
+      //   },
+      //   pathRewrite: {
+      //     '^/api/getSingerList': ''
+      //   }
+      // }
     },
 
     // Various Dev Server settings
@@ -75,13 +75,14 @@ module.exports = {
   },
 
   build: {
+    port: 8081,
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '',
 
     /**
      * Source Maps

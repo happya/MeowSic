@@ -37,8 +37,8 @@
                 <img width="60" height="60" v-lazy="item.imgurl" />
               </div>
               <div class="text">
-                <h2 class="title">{{item.creator.name}}</h2>
-                <p class="desc">{{item.dissname}}</p>
+                <h2 class="title" v-html="item.creator.name"></h2>
+                <p class="desc" v-html="item.dissname"></p>
               </div>
             </li>
           </ul>
@@ -57,7 +57,7 @@ import { mapMutations } from 'vuex'
 import BaseScroll from 'base/scroll/scroll'
 import BaseSlider from 'base/slider/slider'
 import BaseLoading from 'base/loading/loading'
-import { getRecommendAjax, getDiscList } from 'api/recommend'
+import { getRecommend, getDiscList } from 'api/recommend'
 import { playlistMixin } from 'common/js/mixin'
 import { ERR_OK } from 'api/config'
 
@@ -101,7 +101,7 @@ export default {
       }
     },
     _getRecommend() {
-      getRecommendAjax().then((res) => {
+      getRecommend().then((res) => {
         if (res.code === ERR_OK) {
           this.swiperSliders = res.data.slider
         }
