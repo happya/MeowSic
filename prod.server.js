@@ -97,3 +97,15 @@ apiRoutes.get('/search', function(req,res) {
     console.log(e)
   })
 })
+
+app.use('/api', apiRoutes)
+app.use(compression())
+app.use(express.static('./dist'))
+
+module.exports = app.listen(port, function(err) {
+  if (err) {
+    console.log(err)
+    return
+  }
+  console.log('listening at http://localhost:' + port + '\n')
+})
