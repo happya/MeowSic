@@ -32,8 +32,8 @@ export function getRecommendAjax() {
 
 export function getDiscList() {
   // const url = '/api/getDiscList'
-  const url = debug ? '/api/getDiscList' : '101.132.193.166/music/api/getDiscList'
-  // const url = debug ? '/api/getDiscList' : 'http://www.lionust.tech/music/api/getDiscList'
+  // const url = debug ? '/api/getDiscList' : '101.132.193.166/music/api/getDiscList'
+  const url = debug ? '/api/getDiscList' : 'http://lionust.tech/music/api/getDiscList'
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
     hostUin: 0,
@@ -53,7 +53,7 @@ export function getDiscList() {
 }
 
 export function getSongList(disstid) {
-  const url = '/api/getCdInfo'
+  const url = debug ? '/api/getCdInfo' : 'http://lionust.tech/music/api/getCdInfo'
   const data = Object.assign({}, commonParams, {
     disstid,
     type: 1,
