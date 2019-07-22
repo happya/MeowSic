@@ -6,8 +6,8 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export function getLyric(mid) {
   // const url = '/api/lyric'
-  // const url = debug ? '/api/lyric' : '101.132.193.166/music/api/lyric'
-  const url = debug ? '/api/lyric' : 'http://lionust.tech/music/api/lyric'
+  const url = debug ? '/api/lyric' : 'http://101.132.193.166/music/api/lyric'
+  // const url = debug ? '/api/lyric' : 'http://lionust.tech/music/api/lyric'
   const data = Object.assign({}, commonParams, {
     songmid: mid,
     pcachetime: +new Date(),
@@ -46,8 +46,8 @@ function genUrlMid(mids, types) {
 // 如果拿回来的数据有效，则建立一个映射，将原来的Mid和真实的Url映射起来
 export function getSongsUrl(songs) {
   // const url = '/api/getPurlUrl'
-  // const url = debug ? '/api/getPurlUrl' : '101.132.193.166/music/api/getPurlUrl'
-  const url = debug ? '/api/getPurlUrl' : 'http://lionust.tech/music/api/getPurlUrl'
+  const url = debug ? '/api/getPurlUrl' : 'http://101.132.193.166/music/api/getPurlUrl'
+  // const url = debug ? '/api/getPurlUrl' : 'http://lionust.tech/music/api/getPurlUrl'
   let mids = []
   let types = []
 
