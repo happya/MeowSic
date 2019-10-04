@@ -39,6 +39,7 @@ Online website: 👉 [MeowSic](http://lionust.tech/music)
 - **vue-router**: For router switching.
 - **axios**: A HTTP package based on `Promise`,  to send HTTP requests.
 - **better-scroll**: A powerful package to defined pages that need scroll in mobile devices, such as smart phones.
+- **webpack**: To compile and pack the project.
 - **vue-lazyload**: To load images in a "lazyload" way.
 - **ES6**: Using the `es6` syntax like arrow function and Promise.
 - **localStroage**: To locally store users' information, such as favorite songs and search history.
