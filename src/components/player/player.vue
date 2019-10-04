@@ -491,8 +491,8 @@ export default {
       if (!newSong.id || !newSong.url || newSong.id === oldSong.id) {
         return
       }
-      // this.songReady = false
-      // this.canLyricPlay = false
+      this.songReady = false
+      this.canLyricPlay = false
       if (this.currentLyric) {
         this.currentLyric.stop()
         this.currentLyric = null
