@@ -1,4 +1,4 @@
-# Meosic
+# MeowSic
 
 > Meowsic: a Web music player on mobile devices, developed by one of the most popular javaScript framework, [Vue.js](https://vuejs.org/).
 
