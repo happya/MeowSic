@@ -51,7 +51,7 @@ export default {
         if (res.code === ERR_OK) {
           processSongsUrl(this._normalizeSongs(res.songlist)).then((songs) => {
             this.songs = songs
-            console.log(this.songs)
+            // console.log(this.songs)
           })
         }
       })
