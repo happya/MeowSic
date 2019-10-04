@@ -1,6 +1,6 @@
 # vue-music
 
-> Meowsic: a Web music player developed with one of the most popular javaScript framework, Vue.
+> Meowsic: a Web music player on mobile devices, developed by one of the most popular javaScript framework, [Vue.js](https://vuejs.org/).
 
 
 
@@ -28,7 +28,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ## 2. Preview
 
-Online website: 👉 [!MeowSic](http://lionust.tech/music)
+Online website: 👉 [MeowSic](http://lionust.tech/music)
 
 
 
