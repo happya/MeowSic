@@ -15,7 +15,7 @@ export default {
     },
     click: {
       type: Boolean,
-      default: false
+      default: true
     },
     data: { // scroll的数据内容
       type: Array,

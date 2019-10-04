@@ -6,7 +6,6 @@
     :listenScroll="listenScroll"
     :probeType="probeType"
     @scroll="scroll"
-    :click="true"
   >
     <ul>
       <!-- 歌手分类的list -->
