@@ -53,7 +53,7 @@ Online website: 👉 [MeowSic](http://lionust.tech/music)
 
 
 - Develop the **Recommend** page:
-  - Develop `base-scroll` and `lazy-load` component that can be reused in other pages.
+  - Develop `base-scroll` and `lazy-load` components that can be reused in other pages.
 - Develop the **Singer** page:
   - Using `vuex` for states sharing.
   - Develop `player` and `playlist` components  with features  from `html5`. 
