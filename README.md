@@ -34,7 +34,7 @@ Online website: 👉 [!MeowSic](http://lionust.tech/music)
 
 ## 3.  Technology Stack
 
-- **Vue2.5**To display the front webpages.
+- **Vue2.5**: To display the front webpages.
 - **Vuex**:  To Share states between different components
 - **vue-router**: For router switching.
 - **axios**: A HTTP package based on `Promise`,  to send HTTP requests.
@@ -50,19 +50,29 @@ Online website: 👉 [!MeowSic](http://lionust.tech/music)
 
 - Design the basic style and functions.
 - Configure routers and map those functions to **4** tabs: **recommend**, **Singers**, **rank lists**, and **search**, and each tab corresponds to one or more pages.
+
+
 - Develop the **Recommend** page:
   - Develop `base-scroll` and `lazy-load` component that can be reused in other pages.
 - Develop the **Singer** page:
   - Using `vuex` for states sharing.
   - Develop `player` and `playlist` components  with features  from `html5`. 
   - The music-player has functions such as playing/pausing music showing both straight and circle progress bars, fast forward/backward, switching songs, choosing random or sequential play mode, marking favorite songs, add songs to a playlist. 
+  
+  
 - Develop the **Rank list** page.
 - Develop the **Search** page:
   - Develop common components such as `search-box` (searching), `switch` (switching between different tabs) components.
   - Develop functional components such as `suggest-list` and `add-song` (adding songs to playlist).
   - Using **localStorage** to locally store the search histories.
+  
+  
 - Other functions:
   - Develop the `user` components for displaying user's information like **favorite** and **recently**.
+  
+  
 - Optimization:
   - Using **mixins** to store some common operations that can simplify codes.
+  
+  
 - Build, pack and debug.
